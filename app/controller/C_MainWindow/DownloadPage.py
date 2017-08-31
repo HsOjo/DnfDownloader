@@ -24,6 +24,7 @@ class DownloadPage(Ui_DownloadPage, QWidget):
         self.pb_add_dl.clicked.connect(self._pb_add_dl_clicked)
         self.pb_drop_dl.clicked.connect(self._pb_drop_dl_clicked)
         self.pb_clear_dl.clicked.connect(self._pb_clear_dl_clicked)
+        self.pb_down.clicked.connect(self._pb_down_clicked)
 
     def view_file_list(self, data):
         old_row = self.lw_file_l.currentRow()
@@ -77,3 +78,6 @@ class DownloadPage(Ui_DownloadPage, QWidget):
                 data.insert(0, istr)
         self.lw_down_l.clear()
         self.lw_file_l.addItems(data)
+
+    def _pb_down_clicked(self):
+        print('down down down!')
