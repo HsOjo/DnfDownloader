@@ -7,3 +7,7 @@ class Config:
         'http://119.84.68.150/update1.dlied.qq.com/dnf/autopatch/dnf_exp/dnf.exp1.full.tct/',
     ]
 
+    down_dir = './download'
+
+    block_size = 1024
+

@@ -15,6 +15,9 @@ class Download:
         }
         self.c_size = 1024
 
+    def set_chunk_size(self, size):
+        self.c_size = size
+
     def event_connect(self, event, func):
         self.e_func[event].append(func)
 

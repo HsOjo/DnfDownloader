@@ -4,6 +4,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 
 from lib.Download import Download
 from ...common import *
+from ...config import Config
 
 
 class TDownload(QThread):
@@ -31,7 +32,7 @@ class TDownload(QThread):
         for i in range(l):
             self.f_now = self.d_list[i]
 
-            p = 'download/' + self.f_now
+            p = '%s/%s' % (Config.down_dir, self.f_now)
             makedirs(getdirectory(p), exist_ok=True)
 
             self.downer.download(self.src + self.f_now + '.spk', p)
