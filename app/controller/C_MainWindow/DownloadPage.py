@@ -25,6 +25,9 @@ class DownloadPage(Ui_DownloadPage, QWidget):
         self.t_down.i_signal.connect(self._t_cb_update_info)
         self.t_down.sp_signal.connect(self._t_cb_update_speed)
 
+        self.pb_sp.setValue(0)
+        self.pb_gp.setValue(0)
+
         for src in Config.source:
             self.cb_src.addItem(src)
 
@@ -110,7 +113,7 @@ class DownloadPage(Ui_DownloadPage, QWidget):
             self.pb_down.setEnabled(True)
 
     def _t_cb_update_info(self, f_name, f_size):
-        self.l_f_name.setText(f_name)
+        self.l_f_name.setText(getfilename(f_name))
         self.l_f_size.setText(f_size)
 
     def _t_cb_update_speed(self, speed):

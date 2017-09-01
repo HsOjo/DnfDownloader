@@ -271,17 +271,24 @@
      </item>
      <item row="0" column="2" colspan="2">
       <layout class="QGridLayout" name="gridLayout_10">
-       <item row="0" column="0">
+       <item row="1" column="0">
         <widget class="QPushButton" name="pb_add_dl">
          <property name="text">
           <string>Add=&gt;</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
+       <item row="2" column="0">
         <widget class="QPushButton" name="pb_drop_dl">
          <property name="text">
           <string>&lt;=Drop</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QPushButton" name="pb_clear_sel">
+         <property name="text">
+          <string>ClearSel</string>
          </property>
         </widget>
        </item>
@@ -292,5 +299,38 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pb_clear_sel</sender>
+   <signal>clicked()</signal>
+   <receiver>lw_file_l</receiver>
+   <slot>clearSelection()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>363</x>
+     <y>124</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>156</x>
+     <y>223</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pb_clear_sel</sender>
+   <signal>clicked()</signal>
+   <receiver>lw_down_l</receiver>
+   <slot>clearSelection()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>363</x>
+     <y>124</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>222</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

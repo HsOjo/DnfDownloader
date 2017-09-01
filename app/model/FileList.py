@@ -9,7 +9,7 @@ class FileList:
 
     def update(self, src):
         downer = Download()
-        downer.event_connect('start', print)
+        # downer.event_connect('start', print)
         downer.event_connect('error', print)
         data = downer.download(src + Const.list_name)
         if data:

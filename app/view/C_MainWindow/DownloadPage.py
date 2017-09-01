@@ -148,14 +148,19 @@ class Ui_DownloadPage(object):
         self.gridLayout_10.setObjectName("gridLayout_10")
         self.pb_add_dl = QtWidgets.QPushButton(DownloadPage)
         self.pb_add_dl.setObjectName("pb_add_dl")
-        self.gridLayout_10.addWidget(self.pb_add_dl, 0, 0, 1, 1)
+        self.gridLayout_10.addWidget(self.pb_add_dl, 1, 0, 1, 1)
         self.pb_drop_dl = QtWidgets.QPushButton(DownloadPage)
         self.pb_drop_dl.setObjectName("pb_drop_dl")
-        self.gridLayout_10.addWidget(self.pb_drop_dl, 1, 0, 1, 1)
+        self.gridLayout_10.addWidget(self.pb_drop_dl, 2, 0, 1, 1)
+        self.pb_clear_sel = QtWidgets.QPushButton(DownloadPage)
+        self.pb_clear_sel.setObjectName("pb_clear_sel")
+        self.gridLayout_10.addWidget(self.pb_clear_sel, 0, 0, 1, 1)
         self.gridLayout_8.addLayout(self.gridLayout_10, 0, 2, 1, 2)
         self.gridLayout.addLayout(self.gridLayout_8, 1, 0, 1, 1)
 
         self.retranslateUi(DownloadPage)
+        self.pb_clear_sel.clicked.connect(self.lw_file_l.clearSelection)
+        self.pb_clear_sel.clicked.connect(self.lw_down_l.clearSelection)
         QtCore.QMetaObject.connectSlotsByName(DownloadPage)
 
     def retranslateUi(self, DownloadPage):
@@ -184,4 +189,5 @@ class Ui_DownloadPage(object):
         self.pb_clear_dl.setText(_translate("DownloadPage", "Clear List"))
         self.pb_add_dl.setText(_translate("DownloadPage", "Add=>"))
         self.pb_drop_dl.setText(_translate("DownloadPage", "<=Drop"))
+        self.pb_clear_sel.setText(_translate("DownloadPage", "ClearSel"))
 

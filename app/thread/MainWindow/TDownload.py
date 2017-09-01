@@ -1,6 +1,9 @@
+from os import makedirs
+
 from PyQt5.QtCore import QThread, pyqtSignal
 
 from lib.Download import Download
+from ...common import *
 
 
 class TDownload(QThread):
@@ -27,7 +30,11 @@ class TDownload(QThread):
         l = len(self.d_list)
         for i in range(l):
             self.f_now = self.d_list[i]
-            self.downer.download(self.src + self.f_now + '.spk', 'download/' + self.f_now)
+
+            p = 'download/' + self.f_now
+            makedirs(getdirectory(p), exist_ok=True)
+
+            self.downer.download(self.src + self.f_now + '.spk', p)
             self.p_g_signal.emit(i, l - 1)
 
     def _cb_progress(self, a_size, n_size, s_time, n_time):
@@ -35,6 +42,6 @@ class TDownload(QThread):
         self.sp_signal.emit(str(n_size // (n_time - s_time) // 1024) + 'kb/s')
 
     def _cb_start(self, header):
-        print(header)
+        # print(header)
         f_size = str(int(header['Content-Length']) // 1024) + 'kb'
         self.i_signal.emit(self.f_now, f_size)
