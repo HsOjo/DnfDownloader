@@ -41,9 +41,9 @@ class TDownload(QThread):
             self.downer.download(self.src + self.f_now, p)
             if spk(p).unpack(p[:-4]):
                 unlink(p)
+                self.fin_signal.emit(f)
 
             self.p_g_signal.emit(i, l - 1)
-            self.fin_signal.emit(f)
 
     def _cb_progress(self, a_size, n_size, s_time, n_time):
         self.p_s_signal.emit(n_size, a_size)
