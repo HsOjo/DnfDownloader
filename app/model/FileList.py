@@ -14,7 +14,7 @@ class FileList:
         data = downer.download(src + Const.list_name)
         if data:
             nxl = NXList(data)
-            self.data = nxl.l_file
+            self.data = [x['name'] for x in nxl.data]
         else:
             self.data.clear()
 
