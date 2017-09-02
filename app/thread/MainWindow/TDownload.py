@@ -1,8 +1,9 @@
-from os import makedirs
+from os import makedirs, unlink
 
 from PyQt5.QtCore import QThread, pyqtSignal
 
 from lib.Download import Download
+from lib.spk import spk
 from ...common import *
 from ...config import Config
 
@@ -12,6 +13,7 @@ class TDownload(QThread):
     p_g_signal = pyqtSignal(int, int)
     i_signal = pyqtSignal(str, str)
     sp_signal = pyqtSignal(str)
+    fin_signal = pyqtSignal(str)
 
     def __init__(self):
         super().__init__()
@@ -25,18 +27,23 @@ class TDownload(QThread):
 
     def setArgs(self, **kwargs):
         self.src = kwargs['src']
-        self.d_list = kwargs['d_list']
+        self.d_list = list(reversed(kwargs['d_list']))
 
     def run(self):
         l = len(self.d_list)
         for i in range(l):
-            self.f_now = self.d_list[i]
+            f = self.d_list[i]
+            self.f_now = f + '.spk'
 
             p = '%s/%s' % (Config.down_dir, self.f_now)
             makedirs(getdirectory(p), exist_ok=True)
 
-            self.downer.download(self.src + self.f_now + '.spk', p)
+            self.downer.download(self.src + self.f_now, p)
+            if spk(p).unpack(p[:-4]):
+                unlink(p)
+
             self.p_g_signal.emit(i, l - 1)
+            self.fin_signal.emit(f)
 
     def _cb_progress(self, a_size, n_size, s_time, n_time):
         self.p_s_signal.emit(n_size, a_size)

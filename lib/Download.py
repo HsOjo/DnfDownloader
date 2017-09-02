@@ -3,7 +3,7 @@ from time import time
 
 from requests import head, get
 
-from lib.HsIO import HsIO
+from io import BytesIO
 
 
 class Download:
@@ -30,7 +30,7 @@ class Download:
             l = int(h['Content-Length'])
             with closing(get(url, stream=True)) as resp:
                 if path is None:
-                    f = HsIO()
+                    f = BytesIO()
                 else:
                     f = open(path, 'bw')
                 s_time = time()
@@ -40,7 +40,8 @@ class Download:
                     for func in self.e_func['progress']:
                         func(l, f.tell(), s_time, n_time)
             if path is None:
-                data = f.read_range(0)
+                f.seek(0)
+                data = f.read()
                 f.close()
                 return data
             else:

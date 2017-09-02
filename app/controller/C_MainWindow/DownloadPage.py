@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QListWidget
 
 from ...common import *
 from ...config import Config
@@ -18,12 +18,14 @@ class DownloadPage(Ui_DownloadPage, QWidget):
         self.data_fl = []
         self.data_fl_v = []
         self.data_dl = []
+        self.data_fin = []
 
         self.t_down = TDownload()
         self.t_down.p_s_signal.connect(self._t_cb_update_s_progress)
         self.t_down.p_g_signal.connect(self._t_cb_update_g_progress)
         self.t_down.i_signal.connect(self._t_cb_update_info)
         self.t_down.sp_signal.connect(self._t_cb_update_speed)
+        self.t_down.fin_signal.connect(self._t_cb_finish_file)
 
         self.pb_sp.setValue(0)
         self.pb_gp.setValue(0)
@@ -38,10 +40,12 @@ class DownloadPage(Ui_DownloadPage, QWidget):
         self.pb_clear_dl.clicked.connect(self._pb_clear_dl_clicked)
         self.pb_down.clicked.connect(self._pb_down_clicked)
 
-    def view_file_list(self, data):
+    def set_file_list(self, data):
         old_row = self.lw_file_l.currentRow()
         self.lw_file_l.clear()
-        self.lw_file_l.addItems(list_reduce(data, self.data_dl))
+        data = list_reduce(data, self.data_dl)
+        data = list_reduce(data, self.data_fin)
+        self.lw_file_l.addItems(data)
         self.lw_file_l.setCurrentRow(old_row)
 
     def _pb_update_fl_clicked(self):
@@ -53,16 +57,16 @@ class DownloadPage(Ui_DownloadPage, QWidget):
         if self.model_fl.data:
             self.data_fl = data
             self.data_fl_v = self.data_fl
-            self.view_file_list(self.data_fl_v)
+            self.set_file_list(self.data_fl_v)
             self.le_search_fl.setText('')
 
     def _pb_search_fl_clicked(self):
         keyword = self.le_search_fl.text()
         if keyword != '':
             self.data_fl_v = self.model_fl.search(keyword)
-            self.view_file_list(self.data_fl_v)
+            self.set_file_list(self.data_fl_v)
         else:
-            self.view_file_list(self.data_fl)
+            self.set_file_list(self.data_fl)
 
     def _pb_add_dl_clicked(self):
         data = []
@@ -118,3 +122,15 @@ class DownloadPage(Ui_DownloadPage, QWidget):
 
     def _t_cb_update_speed(self, speed):
         self.l_speed.setText(speed)
+
+    def _t_cb_finish_file(self, filename):
+        def list_item_remove(list: QListWidget, item_str):
+            for r in range(list.count() - 1, -1, -1):
+                if list.item(r).text() == item_str:
+                    list.takeItem(r)
+
+        list_item_remove(self.lw_file_l, filename)
+        list_item_remove(self.lw_down_l, filename)
+
+        self.data_dl.remove(filename)
+        self.data_fin.append(filename)
