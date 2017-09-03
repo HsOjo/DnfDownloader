@@ -132,5 +132,6 @@ class DownloadPage(Ui_DownloadPage, QWidget):
         list_item_remove(self.lw_file_l, filename)
         list_item_remove(self.lw_down_l, filename)
 
-        self.data_dl.remove(filename)
+        if filename in self.data_dl:
+            self.data_dl.remove(filename)
         self.data_fin.append(filename)
