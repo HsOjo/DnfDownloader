@@ -30,7 +30,7 @@ class DownloadPage(Ui_DownloadPage, QWidget):
         self.pb_sp.setValue(0)
         self.pb_gp.setValue(0)
 
-        for src in Config.source:
+        for src in Config.source.keys():
             self.cb_src.addItem(src)
 
         self.pb_update_fl.clicked.connect(self._pb_update_fl_clicked)
@@ -103,7 +103,7 @@ class DownloadPage(Ui_DownloadPage, QWidget):
     def _pb_down_clicked(self):
         self.pb_down.setEnabled(False)
         self.l_source.setText(self.src)
-        self.t_down.setArgs(src=self.src, d_list=self.data_dl)
+        self.t_down.set_args(src=self.src, d_list=self.data_dl)
         self.t_down.start()
 
     def _t_cb_update_s_progress(self, now, max):

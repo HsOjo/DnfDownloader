@@ -4,6 +4,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 
 from lib.Download import Download
 from lib.spk import spk
+from lib.tct import tct
 from ...common import *
 from ...config import Config
 
@@ -18,6 +19,9 @@ class TDownload(QThread):
     def __init__(self):
         super().__init__()
         self.src = ''
+        self.fmt = ''
+        self.e_name = ''
+
         self.d_list = []
         self.downer = Download()
         self.downer.event_connect('progress', self._cb_progress)
@@ -25,23 +29,32 @@ class TDownload(QThread):
         self.downer.event_connect('error', print)
         self.f_now = ''
 
-    def setArgs(self, **kwargs):
+    def set_args(self, **kwargs):
         self.src = kwargs['src']
+        info = Config.source[self.src]
+        self.fmt = info['format']
+        self.e_name = '.%s' % self.fmt
         self.d_list = list(reversed(kwargs['d_list']))
 
     def run(self):
         l = len(self.d_list)
         for i in range(l):
             f = self.d_list[i]
-            self.f_now = f + '.spk'
+            self.f_now = f + self.e_name
 
             p = '%s/%s' % (Config.down_dir, self.f_now)
             makedirs(getdirectory(p), exist_ok=True)
 
             self.downer.download(self.src + self.f_now, p)
-            if spk(p).unpack(p[:-4]):
-                unlink(p)
-                self.fin_signal.emit(f)
+
+            if self.fmt == 'spk':
+                if spk(p).unpack(p[:-len(self.e_name)]):
+                    unlink(p)
+                    self.fin_signal.emit(f)
+            elif self.fmt == 'tct':
+                if tct(p).unpack(getdirectory(p)):
+                    unlink(p)
+                    self.fin_signal.emit(f)
 
             self.p_g_signal.emit(i, l - 1)
 

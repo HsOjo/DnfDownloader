@@ -1,9 +1,8 @@
 from contextlib import closing
+from io import BytesIO
 from time import time
 
 from requests import head, get
-
-from io import BytesIO
 
 
 class Download:
@@ -24,6 +23,10 @@ class Download:
     def download(self, url, path=None):
         try:
             h = head(url).headers
+            loc = h.get('Location')
+            if loc is not None:
+                h = head(loc).headers
+
             for func in self.e_func['start']:
                 func(h)
 

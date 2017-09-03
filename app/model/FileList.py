@@ -1,6 +1,7 @@
 from lib.Download import Download
 from lib.NXList import NXList
-from ..const import Const
+from lib.TCList import TCList
+from ..config import Config
 
 
 class FileList:
@@ -11,10 +12,15 @@ class FileList:
         downer = Download()
         # downer.event_connect('start', print)
         downer.event_connect('error', print)
-        data = downer.download(src + Const.list_name)
+        info = Config.source[src]
+        data = downer.download(src + info['list'])
         if data:
-            nxl = NXList(data)
-            self.data = [x['name'] for x in nxl.data]
+            if info['format'] == 'tct':
+                tcl = TCList(data)
+                self.data = [x['name'] for x in tcl.data]
+            else:
+                nxl = NXList(data)
+                self.data = [x['name'] for x in nxl.data]
         else:
             self.data.clear()
 

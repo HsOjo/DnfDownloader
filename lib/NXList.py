@@ -13,13 +13,13 @@ class NXList:
                     [l_name] = io.read_param('<i')
                     f_name = io.read_string(l_name, True)
                     [size, u] = io.read_param('<ii')
-                    [l_sha] = io.read_param('<i')
-                    sha = io.read(l_sha).hex()
+                    [l_hash] = io.read_param('<i')
+                    hash = io.read(l_hash).hex()
                     if d != '':
                         name = '%s/%s' % (d, f_name)
                     else:
                         name = f_name
-                    self.data.append({'name': name, 'sha': sha, 'size': size})
+                    self.data.append({'name': name, 'hash': hash, 'size': size})
 
             def read_dir():
                 [_, l_name] = io.read_param('<ii')
