@@ -7,7 +7,7 @@ class tct:
 
     def unpack(self, path):
         try:
-            self.zip = PyZipFile(path)
+            self.zip = PyZipFile(self.path)
             self.zip.extractall(path)
             return True
         except Exception as e:
