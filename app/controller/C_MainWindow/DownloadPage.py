@@ -57,6 +57,8 @@ class DownloadPage(Ui_DownloadPage, QWidget):
         if self.model_fl.data:
             self.data_fl = data
             self.data_fl_v = self.data_fl
+            self.data_dl.clear()
+            self.lw_down_l.clear()
             self.set_file_list(self.data_fl_v)
             self.le_search_fl.setText('')
 
