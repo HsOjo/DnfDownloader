@@ -46,9 +46,9 @@ class TDownload(QThread):
             makedirs(getdirectory(p), exist_ok=True)
 
             down_fin = False
-            for i in range(Config.retry_count + 1):
-                if i > 0:
-                    print(p, 'retry:%s' % i)
+            for x in range(Config.retry_count + 1):
+                if x > 0:
+                    print(p, 'retry:%s' % x)
                 down_fin = self.downer.download(self.src + self.f_now, p)
                 if down_fin:
                     break
