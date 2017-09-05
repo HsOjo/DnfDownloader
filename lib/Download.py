@@ -22,7 +22,7 @@ class Download:
     def event_connect(self, event, func):
         self.e_func[event].append(func)
 
-    def download(self, url, path=None):
+    def download(self, url, path=None, conn_timeout=None):
         try:
             h = head(url).headers
             loc = h.get('Location')
@@ -39,7 +39,7 @@ class Download:
                     hds = {'Range': 'bytes=%d-' % size}
 
             l = int(h['Content-Length'])
-            with closing(get(url, stream=True, headers=hds)) as resp:
+            with closing(get(url, stream=True, headers=hds, timeout=conn_timeout)) as resp:
                 if path is None:
                     f = BytesIO()
                 else:
@@ -61,7 +61,7 @@ class Download:
                 return True
         except Exception as e:
             for func in self.e_func['error']:
-                func(e)
+                func(path, e)
             return False
 
 

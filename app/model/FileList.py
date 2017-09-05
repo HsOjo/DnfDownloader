@@ -13,7 +13,7 @@ class FileList:
         # downer.event_connect('start', print)
         downer.event_connect('error', print)
         info = Config.source[src]
-        data = downer.download(src + info['list'])
+        data = downer.download(src + info['list'], conn_timeout=Config.conn_timeout)
         if data:
             if info['format'] == 'tct':
                 tcl = TCList(data)

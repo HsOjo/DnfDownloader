@@ -1,4 +1,5 @@
 from os import makedirs, unlink
+from os.path import exists
 
 from PyQt5.QtCore import QThread, pyqtSignal
 
@@ -40,31 +41,34 @@ class TDownload(QThread):
         l = len(self.d_list)
         for i in range(l):
             f = self.d_list[i]
-            self.f_now = f + self.e_name
+            if exists('%s/%s' % (Config.down_dir, f)):
+                self.fin_signal.emit(f)
+            else:
+                self.f_now = f + self.e_name
 
-            p = '%s/%s' % (Config.down_dir, self.f_now)
-            makedirs(getdirectory(p), exist_ok=True)
+                p = '%s/%s' % (Config.down_dir, self.f_now)
+                makedirs(getdirectory(p), exist_ok=True)
 
-            down_fin = False
-            for x in range(Config.retry_count + 1):
-                if x > 0:
-                    print(p, 'retry:%s' % x)
-                down_fin = self.downer.download(self.src + self.f_now, p)
+                down_fin = False
+                for x in range(Config.retry_count + 1):
+                    if x > 0:
+                        print(p, 'retry:%s' % x)
+                    down_fin = self.downer.download(self.src + self.f_now, p, Config.conn_timeout)
+                    if down_fin:
+                        break
+
                 if down_fin:
-                    break
-
-            if down_fin:
-                if self.fmt == 'spk':
-                    if SPK(p).unpack(p[:-len(self.e_name)]):
-                        self.fin_signal.emit(f)
-                    else:
-                        print(p, 'unpack failed.')
-                elif self.fmt == 'tct':
-                    if TCT(p).unpack(getdirectory(p)):
-                        self.fin_signal.emit(f)
-                    else:
-                        print(p, 'unpack failed.')
-            unlink(p)
+                    if self.fmt == 'spk':
+                        if SPK(p).unpack(p[:-len(self.e_name)]):
+                            self.fin_signal.emit(f)
+                        else:
+                            print(p, 'unpack failed.')
+                    elif self.fmt == 'tct':
+                        if TCT(p).unpack(getdirectory(p)):
+                            self.fin_signal.emit(f)
+                        else:
+                            print(p, 'unpack failed.')
+                unlink(p)
 
             self.p_g_signal.emit(i, l - 1)
 

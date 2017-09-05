@@ -121,6 +121,7 @@ class DownloadPage(Ui_DownloadPage, QWidget):
     def _t_cb_update_info(self, f_name, f_size):
         self.l_f_name.setText(getfilename(f_name))
         self.l_f_size.setText(f_size)
+        self.pb_sp.setValue(0)
 
     def _t_cb_update_speed(self, speed):
         self.l_speed.setText(speed)
