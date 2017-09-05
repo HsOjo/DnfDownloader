@@ -1,5 +1,7 @@
 from contextlib import closing
 from io import BytesIO
+from os import stat
+from os.path import exists
 from time import time
 
 from requests import head, get
@@ -30,15 +32,22 @@ class Download:
             for func in self.e_func['start']:
                 func(h)
 
+            hds = None
+            if path is not None:
+                if exists(path):
+                    size = stat(path).st_size
+                    hds = {'Range': 'bytes=%d-' % size}
+
             l = int(h['Content-Length'])
-            with closing(get(url, stream=True)) as resp:
+            with closing(get(url, stream=True, headers=hds)) as resp:
                 if path is None:
                     f = BytesIO()
                 else:
                     f = open(path, 'bw')
                 s_time = time()
-                for pdata in resp.iter_content(chunk_size=self.c_size):
-                    f.write(pdata)
+                for p_data in resp.iter_content(chunk_size=self.c_size):
+                    f.write(p_data)
+                    f.flush()
                     n_time = time()
                     for func in self.e_func['progress']:
                         func(l, f.tell(), s_time, n_time)

@@ -1,15 +1,15 @@
-from zipfile import PyZipFile
+from zipfile import ZipFile
 
 
-class tct:
+class TCT:
     def __init__(self, path):
         self.path = path
 
     def unpack(self, path):
         try:
-            self.zip = PyZipFile(self.path)
-            self.zip.extractall(path)
+            with ZipFile(self.path) as f:
+                f.extractall(path)
             return True
         except Exception as e:
-            print(self.path, e)
+            from traceback import print_exc
             return False

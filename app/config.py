@@ -12,6 +12,8 @@ class Config:
             'format': 'tct', 'list': 'auto.lst'},
     }
 
-    down_dir = './download'
+    down_dir = './Download'
 
     block_size = 1024
+
+    retry_count = 5

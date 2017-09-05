@@ -3,8 +3,8 @@ from os import makedirs, unlink
 from PyQt5.QtCore import QThread, pyqtSignal
 
 from lib.Download import Download
-from lib.spk import spk
-from lib.tct import tct
+from lib.SPK import SPK
+from lib.TCT import TCT
 from ...common import *
 from ...config import Config
 
@@ -45,22 +45,34 @@ class TDownload(QThread):
             p = '%s/%s' % (Config.down_dir, self.f_now)
             makedirs(getdirectory(p), exist_ok=True)
 
-            self.downer.download(self.src + self.f_now, p)
+            down_fin = False
+            for i in range(Config.retry_count + 1):
+                if i > 0:
+                    print(p, 'retry:%s' % i)
+                down_fin = self.downer.download(self.src + self.f_now, p)
+                if down_fin:
+                    break
 
-            if self.fmt == 'spk':
-                if spk(p).unpack(p[:-len(self.e_name)]):
-                    unlink(p)
-                    self.fin_signal.emit(f)
-            elif self.fmt == 'tct':
-                if tct(p).unpack(getdirectory(p)):
-                    unlink(p)
-                    self.fin_signal.emit(f)
+            if down_fin:
+                if self.fmt == 'spk':
+                    if SPK(p).unpack(p[:-len(self.e_name)]):
+                        self.fin_signal.emit(f)
+                    else:
+                        print(p, 'unpack failed.')
+                elif self.fmt == 'tct':
+                    if TCT(p).unpack(getdirectory(p)):
+                        self.fin_signal.emit(f)
+                    else:
+                        print(p, 'unpack failed.')
+            unlink(p)
 
             self.p_g_signal.emit(i, l - 1)
 
     def _cb_progress(self, a_size, n_size, s_time, n_time):
         self.p_s_signal.emit(n_size, a_size)
-        self.sp_signal.emit(str(n_size // (n_time - s_time) // 1024) + 'kb/s')
+        u_time = (n_time - s_time)
+        if u_time > 0:
+            self.sp_signal.emit(str(n_size // u_time // 1024) + 'kb/s')
 
     def _cb_start(self, header):
         # print(header)

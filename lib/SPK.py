@@ -3,7 +3,7 @@ from bz2 import decompress
 from .HsIO import HsIO
 
 
-class spk:
+class SPK:
     h_mark = b'\x11\xb1\x01\x00'
 
     def __init__(self, path):
@@ -20,7 +20,7 @@ class spk:
         try:
             self.io.seek(0)
             h_mark = self.io.read(4)  # 11 B1 01 00
-            if h_mark == spk.h_mark:
+            if h_mark == SPK.h_mark:
                 self.name = self.io.read_string(260, True)
                 [u_mark, g_size] = self.io.read_param('<ii')  # u_mark:200
                 hash = self.io.read(32).hex()
@@ -64,7 +64,7 @@ class spk:
 
 
 if __name__ == '__main__':
-    ins = spk('../download/Music/shallow_keep_b01.ogg')
+    ins = SPK('../download/Music/shallow_keep_b01.ogg')
     ins.unpack()
     print(ins.real)
     # from os import walk
