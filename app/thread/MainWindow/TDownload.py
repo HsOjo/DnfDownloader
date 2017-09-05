@@ -68,7 +68,8 @@ class TDownload(QThread):
                             self.fin_signal.emit(f)
                         else:
                             print(p, 'unpack failed.')
-                unlink(p)
+                if exists(p):
+                    unlink(p)
 
             self.p_g_signal.emit(i, l - 1)
 
