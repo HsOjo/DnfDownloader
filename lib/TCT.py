@@ -11,5 +11,5 @@ class TCT:
                 f.extractall(path)
             return True
         except Exception as e:
-            from traceback import print_exc
+            print(self.path, e)
             return False
