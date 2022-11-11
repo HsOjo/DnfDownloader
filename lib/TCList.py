@@ -19,7 +19,3 @@ class TCList:
                 item['name'] = item['name'].replace('\\', '/')
                 item['size'] = int(item['size'])
                 self.data.append(item)
-
-
-if __name__ == '__main__':
-    print(TCList('/Users/Hs/Downloads/auto.lst').data)

@@ -63,9 +63,3 @@ class Download:
             for func in self.e_func['error']:
                 func(path, e)
             return False
-
-
-if __name__ == '__main__':
-    md = Download()
-    md.event_connect('progress', print)
-    print(md.download('http://download.dfoneople.com/Patch/package.lst', 'package_o.lst'))

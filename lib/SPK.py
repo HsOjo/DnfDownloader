@@ -61,16 +61,3 @@ class SPK:
         except Exception as e:
             print(self.path, e)
             return False
-
-
-if __name__ == '__main__':
-    ins = SPK('../download/Music/shallow_keep_b01.ogg')
-    ins.unpack()
-    print(ins.real)
-    # from os import walk
-    # for d, ds, fs in walk('../download'):
-    #     for f in fs:
-    #         i = '%s/%s' % (d, f)
-    #         ins = spk(i)
-    #         ins.unpack()
-    #         print(i, ins.real)
