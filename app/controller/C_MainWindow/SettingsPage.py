@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QFileDialog
+from PyQt6.QtWidgets import QWidget, QFileDialog
 
 from ...config import Config
 from ...view.C_MainWindow.SettingsPage import Ui_SettingsPage

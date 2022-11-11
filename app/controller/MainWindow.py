@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow, QGridLayout, QWidget
+from PyQt6.QtWidgets import QMainWindow, QGridLayout, QWidget
 
 from ..view.MainWindow import Ui_MainWindow
 from .C_MainWindow.DownloadPage import DownloadPage

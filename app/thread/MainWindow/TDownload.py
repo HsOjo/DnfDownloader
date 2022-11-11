@@ -1,7 +1,7 @@
 from os import makedirs, unlink
 from os.path import exists
 
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt6.QtCore import QThread, pyqtSignal
 
 from lib.Download import Download
 from lib.SPK import SPK

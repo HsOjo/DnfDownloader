@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QListWidget
+from PyQt6.QtWidgets import QWidget, QListWidget
 
 from ...common import *
 from ...config import Config

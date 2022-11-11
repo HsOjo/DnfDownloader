@@ -1,6 +1,6 @@
 from sys import argv
 
-from PyQt5.QtWidgets import QApplication
+from PyQt6.QtWidgets import QApplication
 
 from .controller.MainWindow import MainWindow
 
@@ -13,4 +13,4 @@ class Application:
 
     def run(self):
         self.mw.show()
-        self.status = self.qt.exec_()
+        self.status = self.qt.exec()
